@@ -48,8 +48,7 @@ class MultiFADLModelOvR:
             y_train_clas = y_train.apply(lambda y: 1 if y == clas else 0)
             y_val_clas = y_val.apply(lambda y: 1 if y == clas else 0)
 
-            model = MonoFADLModel(n_inputs=features_names.shape[0],
-                                  n_class=classes.shape[0])
+            model = MonoFADLModel(n_inputs=features_names.shape[0], n_class=2)
     
             model.fit(X_train=X_train, y_train=y_train_clas, 
                         X_val=X_val, y_val=y_val_clas,
@@ -66,7 +65,14 @@ class MultiFADLModelOvR:
             self.predictionsproba_per_model[clas] = model.predict(X_test)
 
         # Global predictions
-        predictionsproba_global = np.array(list(self.predictionsproba_per_model.values())).T[0]
+        predictionsproba_global = np.array([])
+        for key in sorted(self.predictionsproba_per_model.keys()):
+            # insertar columna en predictions_global
+            if predictionsproba_global.shape[0] == 0:
+                predictionsproba_global = self.predictionsproba_per_model[key]
+            else:
+                predictionsproba_global = np.concatenate((predictionsproba_global, self.predictionsproba_per_model[key]), axis=1)
+
         self.predictions_global = np.argmax(predictionsproba_global, axis=1)
 
         return self.predictionsproba_per_model, self.predictions_global

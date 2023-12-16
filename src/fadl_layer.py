@@ -36,8 +36,9 @@ class FADLSelectionLayer(tf.keras.layers.Layer):
         self.mask = self.add_weight("kernel",
                                       shape=shape,
                                       initializer=tf.keras.initializers.Constant(value=0.01),
-                                      regularizer=self.custom_regularizer)
-        
+                                      regularizer=lambda weights: tf.reduce_sum(0.01*weights)
+                                    )   
+                                              
     # --------------------------------------------------
     # Calculate layer weights
 

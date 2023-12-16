@@ -5,7 +5,7 @@ from functools import partial
 import numpy as np
 import pandas as pd
 
-from .layer import FADLSelectionLayer, binary_sigmoid_unit
+from .fadl_layer import FADLSelectionLayer, binary_sigmoid_unit
 
 # -----------------------------------------------
 # BinaryModel definition

@@ -1,0 +1,30 @@
+datasets:
+  brain_GSE50161:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EQ3sFBAT2YtImDkrxrarHZcBrDNPvY-YBwgg3uUkyPeFIw?e=CpUvDF
+    format: csv
+  codon_usage:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EbE_jgZFXjxFlzIiIeHsoEsBqhmBvHimupJ9o3oX_gyEYA?e=H8wqjE
+    format: csv
+  credit_score:
+    url: https://uses0-my.sharepoint.com/:f:/g/personal/marlinbar_alum_us_es/EglWKFQR--BAsUOlfBpCfJsBcwfkpJVgvC16n6SxPNyWVA?e=b6PopU
+    format: csv
+  dermathology:
+    url: https://uses0-my.sharepoint.com/:u:/g/personal/marlinbar_alum_us_es/EfOB0ksjXbhLvnuViv9byokBCGHf5Esi_hMrT3qXTPntLw?e=sxufcz
+    format: arff
+  dna: 
+    url: https://uses0-my.sharepoint.com/:u:/g/personal/marlinbar_alum_us_es/EbqWznKLH-BPjOT3dZoByZoBTSbAQkpnY-EZaNRI3Dz7Dg?e=eeat0x
+    format: arff
+  fetal_health: 
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EadKYBxbeD9KtVQa34i9mwUBrUALsByCRRHSh8qtIi50Ig?e=R3rnOd
+    format: csv
+  hepatitis_egypt:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EQxFxhBRPl1IqhOuAcNq47sBsS5021xPew9oLXh8gXzqEQ?e=xnOSZs
+    format: csv
+  obesity:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EdBfkXrWEz1Bq3BinE2Op4kBnxzevvfaWyJTJ9CmcXJL7g?e=dOlhYq
+    format: csv
+  water_pump:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EWuDzIT65D5Np2Z1DRQWTqwBiUKqUjBWprRjryi9BRhS1Q?e=uwp3dV
+    format: csv
+  
+

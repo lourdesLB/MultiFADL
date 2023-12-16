@@ -2,11 +2,17 @@ datasets:
   brain_GSE50161:
     url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EQ3sFBAT2YtImDkrxrarHZcBrDNPvY-YBwgg3uUkyPeFIw?e=CpUvDF
     format: csv
+  breast_GSE45827:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EV9p-0QB8ylHjMnDeuwTwm4BV6268vF6GRSBEiuVmat1Ag?e=RhaZFR
+    format: csv
+  leukemia_GSE28497:
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/ERNUBIui6TBOu4h9jQG7wH4BcA5b6ILxnK0Keg6wnTK3sw?e=AAzLSY
+    format: csv
   codon_usage:
     url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EbE_jgZFXjxFlzIiIeHsoEsBqhmBvHimupJ9o3oX_gyEYA?e=H8wqjE
     format: csv
   credit_score:
-    url: https://uses0-my.sharepoint.com/:f:/g/personal/marlinbar_alum_us_es/EglWKFQR--BAsUOlfBpCfJsBcwfkpJVgvC16n6SxPNyWVA?e=b6PopU
+    url: https://uses0-my.sharepoint.com/:x:/g/personal/marlinbar_alum_us_es/EQVjU1PIEnxIrExGUQPKpawBrHyLHYF2jhhwrKQtlw5gdA?e=ZKHa5h
     format: csv
   dermathology:
     url: https://uses0-my.sharepoint.com/:u:/g/personal/marlinbar_alum_us_es/EfOB0ksjXbhLvnuViv9byokBCGHf5Esi_hMrT3qXTPntLw?e=sxufcz

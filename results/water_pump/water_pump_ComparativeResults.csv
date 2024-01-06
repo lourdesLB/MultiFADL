@@ -1,0 +1,6 @@
+,test_loss,test_accuracy,test_f1,number of selected features,selected Features
+NoSelection,0.5351374745368958,0.7821548581123352,0.7693528965538636,9214,"['amount_tsh' 'gps_height' 'longitude' ...
+ 'waterpoint_type_group_hand pump' 'waterpoint_type_group_improved spring'
+ 'waterpoint_type_group_other']"
+MonoFADL,-51341.21484375,0.5430976152420044,0.38228954759611533,0,[]
+MultiFADL,"{2: -51341.96875, 0: -51341.95703125, 1: -51341.9921875, 'global': -51341.97265625}","{2: 0.5430976152420044, 0: 0.6157407164573669, 1: 0.9273568987846375, 'global': 0.5430976430976431}","{2: 0.2865803089052454, 0: 0.46930383105168205, 1: 0.8924043318570987, 'global': 0.38228954759611533}","{2: 0, 0: 0, 1: 0, 'global': 0}","{2: array([], dtype=object), 0: array([], dtype=object), 1: array([], dtype=object), 'global': array([], dtype=float64)}"

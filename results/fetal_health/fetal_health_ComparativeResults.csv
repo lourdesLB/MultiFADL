@@ -1,0 +1,11 @@
+,test_loss,test_accuracy,test_f1,number of selected features,selected Features
+NoSelection,0.23220311105251312,0.8840125203132629,0.8805426094223858,20,"['baseline value' 'accelerations' 'fetal_movement' 'uterine_contractions'
+ 'light_decelerations' 'prolongued_decelerations'
+ 'abnormal_short_term_variability' 'mean_value_of_short_term_variability'
+ 'percentage_of_time_with_abnormal_long_term_variability'
+ 'mean_value_of_long_term_variability' 'histogram_width' 'histogram_min'
+ 'histogram_max' 'histogram_number_of_peaks' 'histogram_number_of_zeroes'
+ 'histogram_mode' 'histogram_mean' 'histogram_median' 'histogram_variance'
+ 'histogram_tendency']"
+MonoFADL,-3.3121957778930664,0.777429461479187,0.6800793927230708,1,['accelerations']
+MultiFADL,"{0.0: -3.9985787868499756, 1.0: -4.131368160247803, 2.0: -3.980703353881836, 'global': -4.036883433659871}","{0.0: 0.777429461479187, 1.0: 0.8620689511299133, 2.0: 0.9153605103492737, 'global': 0.7774294670846394}","{0.0: 0.08103850172815691, 1.0: 0.7982120051085568, 2.0: 0.8749108558352873, 'global': 0.6800793927230708}","{0.0: 0, 1.0: 0, 2.0: 0, 'global': 0}","{0.0: array([], dtype=object), 1.0: array([], dtype=object), 2.0: array([], dtype=object), 'global': array([], dtype=float64)}"

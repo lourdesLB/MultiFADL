@@ -4,6 +4,7 @@ from tensorflow.keras import layers
 from functools import partial
 import numpy as np
 import pandas as pd
+from sklearn.metrics import f1_score, accuracy_score
 
 from .MonoFADLModel import MonoFADLModel
 
@@ -22,14 +23,13 @@ class MultiFADLModelOvR:
     def __init__(self) -> None:
         
         self.models = {}
+        self.histories = {}
 
-        self.selected_features_per_class = {}    
+        self.selected_features = {}    
         
-        self.predictionsproba_per_model = {}
-        self.predictions_global = np.array([]) 
+        self.predictionsproba = {}
 
-        self.lossAcc_per_model = {}
-        self.acc_global = 0
+        self.results = {}
 
 
     def fit(self, 
@@ -39,6 +39,8 @@ class MultiFADLModelOvR:
         
         classes = y_train.unique()
         features_names = X_train.columns.values
+
+        total_selected_feaures = set()
         
         # For each class, train a model
         for clas in classes:
@@ -48,63 +50,85 @@ class MultiFADLModelOvR:
             y_train_clas = y_train.apply(lambda y: 1 if y == clas else 0)
             y_val_clas = y_val.apply(lambda y: 1 if y == clas else 0)
 
-            model = MonoFADLModel(n_inputs=features_names.shape[0], n_class=2)
+            model_class = MonoFADLModel(n_inputs=features_names.shape[0], 
+                                        n_class=2)
     
-            model.fit(X_train=X_train, y_train=y_train_clas, 
+            model_class.fit(X_train=X_train, y_train=y_train_clas, 
                         X_val=X_val, y_val=y_val_clas,
                         epochs=epochs, batch_size=batch_size, verbose=verbose)
             
-            self.models[clas] = model
-            self.selected_features_per_class[clas] = model.selected_features        
+            self.models[clas] = model_class
+            self.histories[clas] = model_class.history
+            self.selected_features[clas] = model_class.selected_features
+            total_selected_feaures.update(model_class.selected_features)
+
+        self.selected_features['global'] = np.array(list(total_selected_feaures))
 
 
     def predict(self, X_test: pd.DataFrame) -> (dict, np.array):
-        
+        self.predictionsproba = dict()
+
         # Predictions per model
         for clas, model in self.models.items():
-            self.predictionsproba_per_model[clas] = model.predict(X_test)
+            self.predictionsproba[clas] = model.predict(X_test)
 
         # Global predictions
-        predictionsproba_global = np.array([])
-        for key in sorted(self.predictionsproba_per_model.keys()):
-            # insertar columna en predictions_global
-            if predictionsproba_global.shape[0] == 0:
-                predictionsproba_global = self.predictionsproba_per_model[key]
+        predictionsproba_global = None
+        for clas in sorted(self.predictionsproba.keys()):
+            if predictionsproba_global is None:
+                predictionsproba_global = self.predictionsproba[clas]
             else:
-                predictionsproba_global = np.concatenate((predictionsproba_global, self.predictionsproba_per_model[key]), axis=1)
+                predictionsproba_global = np.concatenate((predictionsproba_global, self.predictionsproba[clas]), axis=1)
 
-        self.predictions_global = np.argmax(predictionsproba_global, axis=1)
+        self.predictionsproba['global'] = predictionsproba_global
 
-        return self.predictionsproba_per_model, self.predictions_global
+        return self.predictionsproba
+
         
     
     def evaluate(self, X_test: pd.DataFrame, y_test: pd.DataFrame) -> (dict, float):
 
-        self.predictionsproba_per_model, self.predictions_global = self.predict(X_test)
+        self.predictionsproba = self.predict(X_test)
 
+        avg_loss = 0
         # Results per model
-        for clas, model in self.models.items():
+        for clas, model_clas in self.models.items():
+
+            print(f"--> Evaluating model class {clas} vs rest")
+
             y_test_clas = y_test.apply(lambda y: 1 if y == clas else 0)
-            self.lossAcc_per_model[clas] = model.evaluate(X_test, y_test_clas)
+            self.results[clas] = model_clas.evaluate(X_test, y_test_clas)
+            print(self.results[clas])
+            avg_loss += self.results[clas]['loss']
+            
 
         # Global results
-        self.acc_global = np.mean(self.predictions_global == y_test)
+        ypred_global = np.argmax(self.predictionsproba['global'], axis=1)
 
+        self.results['global'] = {
+            'loss': avg_loss / len(self.models),
+            'accuracy': accuracy_score(y_test, ypred_global),
+            'f1': f1_score(y_test, ypred_global, average='weighted')
+        }
 
-        return self.lossAcc_per_model, self.acc_global
+        # Transform results data structure 
+        self.results = {
+            'loss': {clas: res['loss'] for clas, res in self.results.items()},
+            'accuracy': {clas: res['accuracy'] for clas, res in self.results.items()},
+            'f1': {clas: res['f1'] for clas, res in self.results.items()}
+        }
+
+        return self.results
     
     
     def get_verbose(self) -> dict:
         return {            
             'models': self.models,
+            'histories': self.histories,
 
-            'selected_features_per_class': self.selected_features_per_class,
-
-            'predictionsproba_per_model': self.predictionsproba_per_model,
-            'predictions_global': self.predictions_global,
-            
-            'lossAcc_per_model': self.lossAcc_per_model,
-            'acc_global': self.acc_global
+            'selected_features': self.selected_features,
+            'predictionsproba': self.predictionsproba,
+            'results': self.results
         }
 
         

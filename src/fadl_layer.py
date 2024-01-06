@@ -18,6 +18,11 @@ class FADLSelectionLayer(tf.keras.layers.Layer):
         self.num_outputs = num_outputs              # Numero de salidas del modelo completo (para usarlo para regularizacion)
         self.regularization = regularization
 
+    def get_config(self):
+        config = super(FADLSelectionLayer, self).get_config()
+        config.update({"num_outputs": self.num_outputs})
+        return config
+
     # --------------------------------------------------
     # Initialize layer weights
 

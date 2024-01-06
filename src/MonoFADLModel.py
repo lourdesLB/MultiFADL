@@ -1,11 +1,12 @@
-import tensorflow as tf, keras
+import tensorflow as tf
+import tensorflow.keras as keras
 from tensorflow.keras import layers
+from src.fadl_layer import FADLSelectionLayer, binary_sigmoid_unit
 
-from functools import partial
 import numpy as np
 import pandas as pd
-
-from .fadl_layer import FADLSelectionLayer, binary_sigmoid_unit
+from sklearn.metrics import f1_score
+from pandas import DataFrame
 
 # -----------------------------------------------
 # BinaryModel definition
@@ -51,7 +52,7 @@ class MonoFADLModel:
             outputs=output_layer, 
             name="model")
         
-        # yModel error function, optimizer and metrics
+        # Model error function, optimizer and metrics
         loss = keras.losses.BinaryCrossentropy() if n_class == 2 else keras.losses.SparseCategoricalCrossentropy()
         metrics = [keras.metrics.BinaryAccuracy()] if n_class == 2 else [keras.metrics.SparseCategoricalAccuracy()]
 
@@ -62,6 +63,8 @@ class MonoFADLModel:
         )
 
         self.model = model
+        self.history = None
+
         self.selected_features = np.array([])
 
         self.predictionsproba = np.array([])
@@ -84,6 +87,8 @@ class MonoFADLModel:
             verbose=verbose,
             callbacks=[callback])
         
+        self.history = self.model.history.history
+        
         fadl_layer = self.model.get_layer('selection_layer')
         mask = binary_sigmoid_unit(fadl_layer.get_mask()).numpy()
         features_names = X_train.columns.values
@@ -97,12 +102,23 @@ class MonoFADLModel:
     def evaluate(self, X_test: pd.DataFrame, y_test: pd.DataFrame) -> np.array:
         self.predictionsproba = self.predict(X_test)
         self.results = self.model.evaluate(X_test, y_test)
+
+        y_pred = np.argmax(self.predictionsproba, axis=1)
+        f1 = f1_score(y_test, y_pred, average='weighted')
+        self.results = np.append(self.results, f1)
+
+        self.results = {
+            'loss': self.results[0],
+            'accuracy': self.results[1],
+            'f1': self.results[2]
+        }
         return self.results
     
     def get_verbose(self) -> dict:
 
         return {
             'model': self.model,
+            'history': self.history,
 
             'selected_features': self.selected_features,
 
